@@ -7,6 +7,6 @@ module.exports = {
   clearMocks: true,
   rootDir: path.resolve(__dirname),
   displayName: require('./package').name,
-  roots: ['../cli/__mocks__', 'src'],
+  roots: ['../@expo/cli/__mocks__', 'src'],
   setupFiles: ['<rootDir>/../cli/jest.setup.ts'],
 };
