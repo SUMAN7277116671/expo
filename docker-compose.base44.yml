@@ -1,0 +1,26 @@
+services:
+  docs:
+    image: node:22
+    working_dir: /app/docs
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    environment:
+      - BASE44_PUBLIC_HOST_SUFFIX=${BASE44_PUBLIC_HOST_SUFFIX:-}
+      - BASE44_SANDBOX_HOST_DOMAIN=${BASE44_SANDBOX_HOST_DOMAIN:-}
+    command:
+      - sh
+      - -ec
+      - |
+        corepack enable
+        yarn install
+        yarn generate-static-resources
+        exec yarn next dev -p 3000 -H 0.0.0.0
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:3000/ || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 180s
+    restart: on-failure
